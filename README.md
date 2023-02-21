@@ -1,4 +1,4 @@
-# closeioautomation
+# Close.io Automation
 
 This is my first Python script, that uses pyautogui, pytesserect, mss.tools, numpy and open CV to automate the outbound calling process in close.io CRM. 
 
