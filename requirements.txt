@@ -1,0 +1,5 @@
+mss==7.0.1
+numpy==1.24.2
+opencv_python_headless==4.7.0.68
+PyAutoGUI==0.9.53
+pytesseract==0.3.10
