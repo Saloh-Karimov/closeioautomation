@@ -1,11 +1,11 @@
 import pytesseract
-# from mss import mss
 import numpy as np
 import cv2
 import time
 import pyautogui
 import sys
 import mss.tools
+import pyperclip
 
 # The coordinates for the region to take a screenshot of
 x, y, width, height = 1585, 67, 94, 36
@@ -15,8 +15,8 @@ text1 = "Invite"
 
 # positions to click
 pos_a = (360, 250)
-pos_b = (1547, 315)
-pos_c = (777, 555)
+pos_b = (1400, 250)
+pos_c = (783, 486)
 pos_d = (1555, 375)
 pos_e = (755, 1008)
 pos_h = (287, 26)
@@ -26,16 +26,55 @@ call = ["command", "shift", "d"]
 end_call = ["command", "."]
 sms = ["command", "shift", "k"]
 email = ["command", "shift", "e"]
+refresh = ["command", "r"]
 
 while True:
-    # Click on pos_a
-    time.sleep(2)
+    # move the mouse to the specified coordinates and right-click
+    pyautogui.moveTo(515, 250)
+    pyautogui.click(button='right')
+
+    # select the "Copy Phone Number" option
+    pyautogui.press('down')
+    pyautogui.press('enter')
+    pyautogui.sleep(0.5)
+
+    # paste the copied phone number and extract the area code
+    copied_text = pyperclip.paste()
+    area_code = copied_text[2:5]
+    ca_area_codes = ['368', '403', '587', '780', '825', '250', '778', '236', '604', '672', '204', '431', '584', '506',
+                     '709', '867', '902', '782', '867', '249',
+                     '613', '683', '753', '807', '343', '519', '705', '226', '437', '548', '647', '905', '289', '365',
+                     '416', '742', '782', '902', '367', '418',
+                     '450', '514', '581', '873', '468', '819', '263', '354', '438', '579', '306', '639', '474', '867']
+
+    # if area_code in ca_area_codes, select Canadian phone number, otherwise select US phone number
+    if area_code in ca_area_codes:
+        print("CA number")
+        pyautogui.click(1810, 26)
+        time.sleep(0.5)
+        pyautogui.click(1666, 166)
+        time.sleep(0.5)
+        pyautogui.press('up')
+        pyautogui.press('enter')
+
+    else:
+        print("US number")
+        pyautogui.click(1810, 26)
+        time.sleep(0.5)
+        pyautogui.click(1666, 166)
+        time.sleep(0.5)
+        pyautogui.press('up')
+        pyautogui.press('down')
+        pyautogui.press('enter')
+
+    # Click on the lead
+    time.sleep(1)
     pyautogui.click(pos_a)
     time.sleep(4)
 
-    # Click call
+    # Dial
     pyautogui.hotkey(*call)
-    time.sleep(19)
+    time.sleep(21)
 
     # Take screenshot of roi1
     with mss.mss() as sct:
@@ -54,7 +93,7 @@ while True:
         pyautogui.hotkey(*end_call)
         time.sleep(2)
         pyautogui.hotkey(*call)
-        time.sleep(18)
+        time.sleep(21)
 
     # Take screenshot of roi1 and check for text1
     with mss.mss() as sct:
@@ -71,9 +110,11 @@ while True:
 
     else:
         pyautogui.hotkey(*end_call)
-        time.sleep(5)
+        time.sleep(1)
 
     # Click sms and wait for 2 seconds
+    pyautogui.hotkey(*refresh)
+    time.sleep(5)
     pyautogui.hotkey(*sms)
     time.sleep(2)
 
@@ -92,7 +133,7 @@ while True:
 
     # Click email and wait for 2 seconds
     pyautogui.hotkey(*email)
-    time.sleep(3)
+    time.sleep(2)
 
     # Click on pos_d
     pyautogui.click(pos_d)
